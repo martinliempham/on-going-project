@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 //import Radium, { StyleRoot } from 'radium';
 //commented out to use css modules
+import Cockpit from '../components/Cockpit/Cockpit';
 import classes from './App.css';
-import Person from './Person/Person';
-import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
+import Persons from '../components/Persons/Persons';
+import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary';
 
 class App extends Component {
   state = {
@@ -47,44 +48,16 @@ class App extends Component {
   };
 
   render() {
-    // js css inline style
-    // const style = {
-    //   backgroundColor: 'green',
-    //   color: 'white',
-    //   font: 'inherit',
-    //   border: '4px solid green',
-    //   padding: '8px',
-    //   cursor: 'pointer'
-
-    //hover is a pseudo selector that we can use now with radium
-    // ':hover': {
-    //   backgroundColor: 'lightgreen',
-    //   color: 'black'
-    // }
-    // };
-
     let persons = null;
-    let btnClass = '';
     if (this.state.showPersons) {
       persons = (
-        <div>
-          {this.state.persons.map((person, index) => {
-            return (
-              //key must be in the outter element when using the map method because that is the element we replicate
-              <ErrorBoundary key={person.id}>
-                <Person
-                  click={() => this.deletePersonHandler(index)}
-                  name={person.name}
-                  age={person.age}
-                  changed={event => this.nameChangeHandler(event, person.id)}
-                />
-              </ErrorBoundary>
-            );
-          })}
-        </div>
+        <Persons
+          persons={this.state.persons}
+          clicked={this.deletePersonHandler}
+          changed={this.nameChangeHandler}
+        />
       );
 
-      btnClass = classes.Red;
       //this is using the inline style which we will no longer use, we will use css module style
       //style.backgroundColor = 'red';
 
@@ -96,23 +69,17 @@ class App extends Component {
     }
     //let classes = ['Red', 'Bold'].join(' ');
     //syntax above css class list style
-    const assignedClasses = [];
-    if (this.state.persons.length <= 2) {
-      assignedClasses.push(classes.Red);
-    }
-    if (this.state.persons.length <= 1) {
-      assignedClasses.push(classes.Bold);
-    }
+
     return (
       //must wrap with styleroot component to access
       //styleroot is used with radium
       //<StyleRoot>
       <div className={classes.App}>
-        <h1>My Course Project</h1>
-        <p className={assignedClasses.join(' ')}>SDET 1 at Rent the Runway</p>
-        <button className={btnClass} onClick={this.togglePersonsHandler}>
-          Toggle Person
-        </button>
+        <Cockpit
+          showPersons={this.state.showPersons}
+          persons={this.state.persons}
+          clicked={this.togglePersonsHandler}
+        />
         {persons}
       </div>
       //</StyleRoot>
@@ -155,3 +122,36 @@ export default App;
 //   <p>Lead: 5.12</p>
 //   <p>TR: 5.13</p>
 // </Person>
+
+//split up components to make a persons.js component
+
+/* {this.state.persons.map((person, index) => {
+  return (
+    //key must be in the outter element when using the map method because that is the element we replicate
+    //<ErrorBoundary key={person.id}>
+    <Person
+      click={() => this.deletePersonHandler(index)}
+      name={person.name}
+      age={person.age}
+      key={person.id}
+      changed={event => this.nameChangeHandler(event, person.id)}
+    />
+    //</ErrorBoundary>
+  );
+})} */
+
+// js css inline style
+// const style = {
+//   backgroundColor: 'green',
+//   color: 'white',
+//   font: 'inherit',
+//   border: '4px solid green',
+//   padding: '8px',
+//   cursor: 'pointer'
+
+//hover is a pseudo selector that we can use now with radium
+// ':hover': {
+//   backgroundColor: 'lightgreen',
+//   color: 'black'
+// }
+// };
