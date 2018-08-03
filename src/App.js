@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+//import Radium, { StyleRoot } from 'radium';
+//commented out to use css modules
 import './App.css';
 import Person from './Person/Person';
 
@@ -51,6 +53,11 @@ class App extends Component {
       border: '4px solid green',
       padding: '8px',
       cursor: 'pointer'
+      //hover is a pseudo selector that we can use now with radium
+      // ':hover': {
+      //   backgroundColor: 'lightgreen',
+      //   color: 'black'
+      // }
     };
 
     let persons = null;
@@ -70,20 +77,42 @@ class App extends Component {
           })}
         </div>
       );
+      style.backgroundColor = 'red';
+      //this syntax is used with radium
+      // style[':hover'] = {
+      //   backgroundColor: 'salmon',
+      //   color: 'black'
+      // };
     }
-
+    //let classes = ['Red', 'Bold'].join(' ');
+    //syntax above css class list style
+    const classes = [];
+    if (this.state.persons.length <= 2) {
+      classes.push('Red');
+    }
+    if (this.state.persons.length <= 1) {
+      classes.push('Bold');
+    }
     return (
+      //must wrap with styleroot component to access
+      //styleroot is used with radium
+      //<StyleRoot>
       <div className="App">
         <h1>My Course Project</h1>
-        <p>SDET 1 at Rent the Runway</p>
+        <p className={classes.join(' ')}>SDET 1 at Rent the Runway</p>
         <button style={style} onClick={this.togglePersonsHandler}>
           Toggle Person
         </button>
         {persons}
       </div>
+      //</StyleRoot>
     );
   }
 }
+//below is called a higher order Component
+//radium is wrapping the app Component
+//npm install --save radium is the package
+//export default Radium(App);
 
 export default App;
 
