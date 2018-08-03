@@ -1,16 +1,18 @@
 import React from 'react';
 //import Radium from 'radium';
 //here styleroot isn't needed
-
+//css modules will make scoped css files allowing it to be scoped rather than global
 import './Person.css';
 
 const person = props => {
-  const style = {
-    '@media (min-width: 500px)': {
-      width: '450px'
-    }
-  };
+  //media query using radium
+  // const style = {
+  //   '@media (min-width: 500px)': {
+  //     width: '450px'
+  //   }
+  // };
   return (
+    //style={style} should go in after "Person" for radium
     <div className="Person">
       {/* linked through props to app.js */}
       <p onClick={props.click}>
