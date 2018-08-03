@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 //import Radium, { StyleRoot } from 'radium';
 //commented out to use css modules
-import './App.css';
+import classes from './App.css';
 import Person from './Person/Person';
 
 class App extends Component {
@@ -86,20 +86,20 @@ class App extends Component {
     }
     //let classes = ['Red', 'Bold'].join(' ');
     //syntax above css class list style
-    const classes = [];
+    const assignedClasses = [];
     if (this.state.persons.length <= 2) {
-      classes.push('Red');
+      assignedClasses.push(classes.Red);
     }
     if (this.state.persons.length <= 1) {
-      classes.push('Bold');
+      assignedClasses.push(classes.Bold);
     }
     return (
       //must wrap with styleroot component to access
       //styleroot is used with radium
       //<StyleRoot>
-      <div className="App">
+      <div className={classes.App}>
         <h1>My Course Project</h1>
-        <p className={classes.join(' ')}>SDET 1 at Rent the Runway</p>
+        <p className={assignedClasses.join(' ')}>SDET 1 at Rent the Runway</p>
         <button style={style} onClick={this.togglePersonsHandler}>
           Toggle Person
         </button>

@@ -2,7 +2,7 @@ import React from 'react';
 //import Radium from 'radium';
 //here styleroot isn't needed
 //css modules will make scoped css files allowing it to be scoped rather than global
-import './Person.css';
+import classes from './Person.css';
 
 const person = props => {
   //media query using radium
@@ -13,7 +13,7 @@ const person = props => {
   // };
   return (
     //style={style} should go in after "Person" for radium
-    <div className="Person">
+    <div className={classes.Person}>
       {/* linked through props to app.js */}
       <p onClick={props.click}>
         Hi I'm {props.name} and I am {props.age} years old!

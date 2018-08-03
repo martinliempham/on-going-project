@@ -1,3 +1,5 @@
+/* with css modules now we can import each of these classes individually to scope it to the component we want */
+
 .App {
   text-align: center;
 }
