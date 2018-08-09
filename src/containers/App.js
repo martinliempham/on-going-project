@@ -1,19 +1,59 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 //import Radium, { StyleRoot } from 'radium';
 //commented out to use css modules
 import Cockpit from '../components/Cockpit/Cockpit';
 import classes from './App.css';
 import Persons from '../components/Persons/Persons';
 import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary';
+import Aux from '../hoc/Aux';
+import withClass from '../hoc/withClass';
 
-class App extends Component {
+class App extends PureComponent {
+  constructor(props) {
+    super(props);
+    console.log('[App.js] Inside Constructor', props);
+  }
+
+  componentWillMount() {
+    console.log('[App.js] Inside componentWillMount()');
+  }
+
+  componentDidMount() {
+    console.log('[App.js] Inside componentDidMount()');
+  }
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   console.log(
+  //     '[UPDATE App.js] Inside shouldComponentUpdate',
+  //     nextProps,
+  //     nextState
+  //   );
+  //   return (
+  //     nextState.persons !== this.state.persons ||
+  //     nextState.showPersons !== this.state.showPersons
+  //   );
+  // }
+
+  componentWillUpdate(nextProps, nextState) {
+    console.log(
+      '[UPDATE App.js] Inside componentWillUpdate',
+      nextProps,
+      nextState
+    );
+  }
+
+  componentDidUpdate() {
+    console.log('[UPDATE App.js] Inside componentDidUpdate');
+  }
+
   state = {
     persons: [
       { id: 'a1', name: 'Martin', age: 34 },
       { id: 'b2', name: 'Matt', age: 36 },
       { id: 'c3', name: 'Marc', age: 32 }
     ],
-    showPersons: false
+    showPersons: false,
+    toggleClicked: 0
   };
 
   nameChangeHandler = (event, id) => {
@@ -35,7 +75,12 @@ class App extends Component {
 
   togglePersonsHandler = () => {
     const doesShow = this.state.showPersons;
-    this.setState({ showPersons: !doesShow });
+    this.setState((prevState, props) => {
+      return {
+        showPersons: !doesShow,
+        toggleClicked: this.state.toggleClicked + 1
+      };
+    });
   };
 
   deletePersonHandler = personIndex => {
@@ -48,6 +93,7 @@ class App extends Component {
   };
 
   render() {
+    console.log('[App.js] inside render()');
     let persons = null;
     if (this.state.showPersons) {
       persons = (
@@ -57,24 +103,14 @@ class App extends Component {
           changed={this.nameChangeHandler}
         />
       );
-
-      //this is using the inline style which we will no longer use, we will use css module style
-      //style.backgroundColor = 'red';
-
-      //this syntax is used with radium
-      // style[':hover'] = {
-      //   backgroundColor: 'salmon',
-      //   color: 'black'
-      // };
     }
-    //let classes = ['Red', 'Bold'].join(' ');
-    //syntax above css class list style
 
     return (
-      //must wrap with styleroot component to access
-      //styleroot is used with radium
-      //<StyleRoot>
-      <div className={classes.App}>
+      //below withclass is a higher order component used to wrap components and saves html from rendering another component
+      <Aux>
+        <button onClick={() => this.setState({ showPersons: true })}>
+          Show Persons
+        </button>
         <Cockpit
           appTitle={this.props.title}
           showPersons={this.state.showPersons}
@@ -82,77 +118,9 @@ class App extends Component {
           clicked={this.togglePersonsHandler}
         />
         {persons}
-      </div>
-      //</StyleRoot>
+      </Aux>
     );
   }
 }
-//below is called a higher order Component
-//radium is wrapping the app Component
-//npm install --save radium is the package
-//export default Radium(App);
 
-export default App;
-
-// <Person
-//   name={this.state.persons[0].name}
-//   age={this.state.persons[0].age}
-//   //switches name when you click the paragraph connected to person.js
-//   click={this.switchNameHandler.bind(this, 'Tino!!!')}
-// >
-//   <p>Boulder: v7</p>
-//   <p>Lead: 5.13</p>
-//   <p>TR: 5.14</p>
-// </Person>
-//
-// <Person
-//   name={this.state.persons[1].name}
-//   age={this.state.persons[1].age}
-//   changed={this.nameChangeHandler}
-// >
-//   <p>Boulder: v4</p>
-//   <p>Lead: N/A</p>
-//   <p>TR: 5.10</p>
-// </Person>
-//
-// <Person
-//   name={this.state.persons[2].name}
-//   age={this.state.persons[2].age}
-// >
-//   <p>Boulder: v8</p>
-//   <p>Lead: 5.12</p>
-//   <p>TR: 5.13</p>
-// </Person>
-
-//split up components to make a persons.js component
-
-/* {this.state.persons.map((person, index) => {
-  return (
-    //key must be in the outter element when using the map method because that is the element we replicate
-    //<ErrorBoundary key={person.id}>
-    <Person
-      click={() => this.deletePersonHandler(index)}
-      name={person.name}
-      age={person.age}
-      key={person.id}
-      changed={event => this.nameChangeHandler(event, person.id)}
-    />
-    //</ErrorBoundary>
-  );
-})} */
-
-// js css inline style
-// const style = {
-//   backgroundColor: 'green',
-//   color: 'white',
-//   font: 'inherit',
-//   border: '4px solid green',
-//   padding: '8px',
-//   cursor: 'pointer'
-
-//hover is a pseudo selector that we can use now with radium
-// ':hover': {
-//   backgroundColor: 'lightgreen',
-//   color: 'black'
-// }
-// };
+export default withClass(App, classes.App);
