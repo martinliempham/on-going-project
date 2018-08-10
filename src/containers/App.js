@@ -4,7 +4,6 @@ import React, { PureComponent } from 'react';
 import Cockpit from '../components/Cockpit/Cockpit';
 import classes from './App.css';
 import Persons from '../components/Persons/Persons';
-import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary';
 import Aux from '../hoc/Aux';
 import withClass from '../hoc/withClass';
 
